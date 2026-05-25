@@ -4,14 +4,18 @@
 
 
 package com.mycompany.loginsysyem;
+import static com.mycompany.loginsysyem.scanner.nextLine;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Pattern;
+import org.json.simple.JSONObject;
 /**
  *
  * @author Student
  */
 public class LoginSysyem {
     static Scanner input =  new Scanner (System.in);
+    private static int messageCounter;
     
     public static boolean checkUserName(String username) {
         return username.contains("_") && username.length() <= 5;
@@ -47,6 +51,63 @@ public class LoginSysyem {
         }else{
             return "username or password incorrect, please try again";
         }
+    }
+    
+    static void sendMessage() {
+        long messageId = 10000000000L + new Random().nextInt(900000000);
+        messageCounter++;
+        
+        System.out.print("Input recipient number (+CCXXXXXXXXXX):");
+        String recipient = scanner.nextLine(); 
+              recipient = CheckRecipient(recipient);
+        if (recipient == null) return;
+        
+        System.out.print("Enter your message (max 250 characters): ");
+        String message = scanner.nextLine();
+        
+        if (message.length() > 250) {
+            System.out.println("Message exceeds 250 characters");
+            return;
+        } 
+        
+        String[] words = message.trim().split("\\s+");
+        String hash = String.format("%02d:%d:%s:%s",
+                Long.valueOf(Long.toString(messageId).substring(0,2)),
+                messageCounter,
+                words[0].toUpperCase(),
+                words.length > 1 ? words[words.length - 1].toUpperCase() : "");
+        
+        System.out.println("\nSelect action:");
+        System.out.println("1. Post");
+        System.out.println("2. Cancel");
+        System.out.println("3. Archive");
+        
+        int action = Integer.parseInt(scanner.nextLine());
+        
+        if (action == 2) {
+            System.out.println("Message Cancelled");
+            return;
+        }
+        
+        JSONObject jsonMessage = new JSONObject();
+        jsonMessage.put("MessageID", messageId);
+        jsonMessage.put("MessageHash", hash);
+        jsonMessage.put("Recipient", recipient);
+        jsonMessage.put("Message", message);
+        
+        if (action == 3) {
+            messageStorage.add(jsonMessage);
+            System.out.println("Message stored.");
+            return;
+        }
+        int Total_messages = 0;
+        
+        Total_messages++;
+        
+        System.out.println("\nMessage Sent!");
+        System.out.println("Message ID: " + hash);
+        System.out.println("Recipient: " + recipient);
+        System.out.println("Message: " + message);
     }
     
     public static void main(String[] args) {
@@ -114,6 +175,10 @@ public class LoginSysyem {
     }
 
     private static boolean checkCellPhone(String CellPhone) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    private static String CheckRecipient(String recipient) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
