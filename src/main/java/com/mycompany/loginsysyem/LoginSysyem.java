@@ -3,12 +3,53 @@
  */
 
 
-package com.mycompany.loginsysyem;
+package com.mycompany.loginsysyem
 import static com.mycompany.loginsysyem.scanner.nextLine;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Pattern;
+import static junit.framework.Assert.assertEquals;
 import org.json.simple.JSONObject;
+
+    static String registerUser(String username, String Password) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    static boolean checkCellPhoneNumber(String number) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    static boolean loginUser(String username, String password, String storedUsername, String storedPassword) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    static String createMessageHash(String messageID, int messageNumber, String message) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    static String validateMessageLength(String message) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    static void sendMessage() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    static void main(String[] args) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    static String returnLoginStatus(boolean status) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    static boolean checkPasswordComplexity(String password) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    static boolean checkUserName(String username) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 /**
  *
  * @author Student
@@ -109,6 +150,26 @@ public class LoginSysyem {
         System.out.println("Recipient: " + recipient);
         System.out.println("Message: " + message);
     }
+    public static String validateMessageLength(String message) {
+        if (message.length() <= 250) {
+            return "Message ready to send.";
+        }
+        
+        int excess = message.length() - 250;
+        return "Message exceeds 250 characters by " + excess +
+                "; please reduce the size.";
+    }
+    public static String createMessageHash(String messageID, int messageNumber, String message) {
+        String[] words = message.trim().split("\\s+");
+        
+        String firstWord = words[0].toUpperCase();
+        String lastWord = words[words.length - 1].toUpperCase();
+        
+        return messageID.substring(0,2)+ ":" +
+                messageNumber + ":" +
+                firstWord + ":" +
+                lastWord;
+    }
     
     public static void main(String[] args) {
         System.out.println("Welcome to the login System");
@@ -146,6 +207,7 @@ public class LoginSysyem {
         }
         System.out.println("\nLogin");
         
+        
         String loginUser;
         String LoginPass;
         boolean status;
@@ -181,4 +243,23 @@ public class LoginSysyem {
     private static String CheckRecipient(String recipient) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+}
+public void testMessageLengthSuccess() {
+    
+    String expected = "Message ready to send.";
+    
+    String actual = LoginSysyem.validateMessageLength("Did you get the cake?");
+    assertEquals(expected, actual);
+}
+public void testMessageLengthFailure() {
+    String longMessage = "A". repeat(260);
+    String expected = "Message exceeds 250 characters by 10; please reduce the size.";
+    String actual = LoginSysyem.validateMessageLength(longMessage);
+    assertEquals(expected, actual);
+}
+
+public void testMessageHash() {
+    String expected = "00:1:Did:Cake?";
+    String actual = LoginSysyem.createMessageHash("000000001",1,"Did you get the cake?");
+    assertEquals(expected, actual);
 }
